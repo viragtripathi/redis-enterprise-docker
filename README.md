@@ -1,4 +1,4 @@
-## Goal: A 3 node Redis Enterprise cluster setup in Docker containers (For Development purpose only)
+## A 3 node Redis Enterprise cluster setup in Docker containers (For Development purpose only)
 
 ### Prerequisites
 
