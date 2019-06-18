@@ -2,7 +2,7 @@
 
 ### Prerequisites
 
-Docker installed on a *nix based OS (For windows with docker you would have to copy/paste the commands from the script)
+Docker compatible OS and Docker installed.
   - (I have it setup on my MacBook Pro)
 
 ## Additional info
