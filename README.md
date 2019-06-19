@@ -4,6 +4,7 @@
 
 Docker compatible OS and Docker installed.
   - (I have it setup on my MacBook Pro)
+Update Docker resources with 4 CPUs and 6-10GB RAM  
 
 ## Additional info
 
