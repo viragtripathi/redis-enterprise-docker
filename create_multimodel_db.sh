@@ -2,7 +2,7 @@
 
 echo -n "Enter the name of the module: "
 read module
-if [ $module == "graph" ] ||  [ $module == "ft" ] || [ $module == "rebloom" ] || [ $module == "rejson" ]; then
+if [ $module == "graph" ] ||  [ $module == "ft" ] || [ $module == "rebloom" ] || [ $module == "rejson" ] || [ $module == "timeseries" ]; then
 # Create a multi-model demo database
 echo "Creating Redis Enterprise database with $module module "
 rm list_modules.sh
@@ -28,6 +28,8 @@ graph_db_name="RedisGraph-db"
 graph_module_args=""
 bf_db_name="RedisBloom-db"
 bf_module_args=""
+ts_db_name="RedisTimeSeries-db"
+ts_module_args=""
 module_name=`sudo docker exec --user root -it re-node1 bash -c "grep -i $module /opt/module_list.txt | cut -d ' ' -f 2"`
 uid=`sudo docker exec --user root -it re-node1 bash -c "grep -i $module /opt/module_list.txt | cut -d ' ' -f 3"`
 semantic_version=`sudo docker exec --user root -it re-node1 bash -c "grep -i $module /opt/module_list.txt | cut -d ' ' -f 4"`
@@ -57,8 +59,13 @@ rebloom)
 curl -k -L -u REDemo@redislabs.com:redis123 --location-trusted -X POST https://localhost:9443/v1/bdbs -H "Content-type:application/json" -d '{"name": "'"$bf_db_name"'", "type":"redis", "memory_size":1073741824, "port":12005, "module_list": [{"module_args": "'"$bf_module_args"'", "module_id": "'"$uid"'", "module_name": "'"$module_name"'", "semantic_version": "'"$semantic_version"'"}]}'
 EOF
    ;;
+timeseries)
+   tee -a create_multimodeldb.sh <<EOF
+curl -k -L -u REDemo@redislabs.com:redis123 --location-trusted -X POST https://localhost:9443/v1/bdbs -H "Content-type:application/json" -d '{"name": "'"$ts_db_name"'", "type":"redis", "memory_size":1073741824, "port":12005, "module_list": [{"module_args": "'"$ts_module_args"'", "module_id": "'"$uid"'", "module_name": "'"$module_name"'", "semantic_version": "'"$semantic_version"'"}]}'
+EOF
+   ;;
 *)
-    echo "Unknown Module! Valid modules are: graph, ft, rejson and rebloom"
+    echo "Unknown Module! Valid modules are: graph, ft, rejson, rebloom and timeseries"
     ;;
 esac
 
@@ -71,6 +78,6 @@ sudo docker exec -it re-node1 bash -c "redis-cli -h redis-12005.cluster1.local -
 sudo docker exec -it re-node1 bash -c "rladmin status databases"
 sudo docker port re-node1 | grep 12005
 else
-echo "Unknown Module $module! Valid modules are: graph, ft, rejson and rebloom"
+echo "Unknown Module $module! Valid modules are: graph, ft, rejson, rebloom and timeseries"
 exit 0
 fi
